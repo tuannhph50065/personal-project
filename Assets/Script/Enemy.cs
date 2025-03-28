@@ -13,12 +13,17 @@ public class EnemyController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
+    
+
     public static int EnemiesKilled = 0;
 
     // Thêm biến cho hiệu ứng nhấp nháy
     private Color originalColor;
     public float flashDuration = 0.1f;
     public int flashCount = 3;
+    
+    public GameObject[] lootItems; // Danh sách vật phẩm có thể rơi
+    public float dropChance = 0.5f; // Xác suất rơi vật phẩm (50%)
 
     void Start()
     {
@@ -63,6 +68,17 @@ public class EnemyController : MonoBehaviour
         EnemiesKilled++;
         Debug.Log($"Enemy died! Total killed: {EnemiesKilled}");
         Destroy(gameObject);
+        DropLoot();
+    }
+
+    void DropLoot()
+    {
+        if (lootItems.Length > 0 && Random.value < dropChance)
+        {
+            int randomIndex = Random.Range(0, lootItems.Length);
+            Instantiate(lootItems[randomIndex], transform.position, Quaternion.identity);
+            Debug.Log("Dropped loot item!");
+        };
     }
 
     private void OnCollisionEnter2D(Collision2D other)

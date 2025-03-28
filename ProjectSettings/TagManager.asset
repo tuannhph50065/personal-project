@@ -9,6 +9,7 @@ TagManager:
   - HeathPickup
   - BulletShoot
   - Bullet
+  - Boss
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     protected float currentHealth;
     public float health;
     
-    public TextMesh scoreText;
     public Slider healthBar;
 
     private SpriteRenderer spriteRenderer;

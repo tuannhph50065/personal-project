@@ -5,9 +5,6 @@ public class Weapon : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
-    void Start()
-    {
-    }
 
     private void Update()
     {

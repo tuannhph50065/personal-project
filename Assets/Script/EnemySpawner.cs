@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour
     public float spawnInterval = 2f; // Thời gian giữa các lần sinh quái
     public float spawnRadius = 10f; // Bán kính sinh quái quanh nhân vật
     private float spawnTimer; // Bộ đếm thời gian sinh quái
+    public float EnemiPerSpawn = 3;
     private bool bossSpawned = false; // Cờ kiểm tra boss đã sinh chưa
     private GameObject[] fences; // Mảng lưu các hàng rào
 
@@ -24,11 +25,14 @@ public class EnemySpawner : MonoBehaviour
             spawnTimer -= Time.deltaTime; // Giảm thời gian mỗi frame
             if (spawnTimer <= 0f) // Nếu hết thời gian chờ
             {
-                SpawnEnemy(); // Sinh một quái thường
-                spawnTimer = spawnInterval; // Đặt lại bộ đếm
+                for (int i = 0; EnemiPerSpawn > 0; i++)
+                {
+                    SpawnEnemy(); // Sinh một quái thường
+                    spawnTimer = spawnInterval; // Đặt lại bộ đếm
+                }
             }
 
-            if (EnemyController.EnemiesKilled >= 5 && !bossSpawned) // Nếu đã tiêu diệt 20 quái
+            if (EnemyController.EnemiesKilled >= 10 && !bossSpawned) // Nếu đã tiêu diệt 20 quái
             {
                 SpawnBossAndFences(); // Sinh boss và hàng rào
                 bossSpawned = true; // Đánh dấu boss đã xuất hiện
@@ -48,8 +52,6 @@ public class EnemySpawner : MonoBehaviour
             EnemyController enemyController = enemy.GetComponent<EnemyController>(); // Lấy script của quái
             enemyController.target = player; // Gán mục tiêu là nhân vật
             int rd = Random.Range(0, 2);
-
-            
         }
     }
 
@@ -58,32 +60,17 @@ public class EnemySpawner : MonoBehaviour
         GameObject[] existingEnemy = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in existingEnemy)
         {
-         Destroy(enemy);   
-        }
-        
-
-        if (fencePrefab != null) // Kiểm tra prefab hàng rào
-        {
-            float fenceSize = 20f; // Kích thước khu vực hàng rào
-            fences = new GameObject[4]; // Tạo mảng lưu 4 hàng rào
-            fences[0] = Instantiate(fencePrefab, player.position + new Vector3(0, fenceSize / 2, 0), Quaternion.identity); // Hàng rào trên
-            fences[1] = Instantiate(fencePrefab, player.position + new Vector3(0, -fenceSize / 2, 0), Quaternion.identity); // Hàng rào dưới
-            fences[2] = Instantiate(fencePrefab, player.position + new Vector3(-fenceSize / 2, 0, 0), Quaternion.Euler(0, 0, 90)); // Hàng rào trái
-            fences[3] = Instantiate(fencePrefab, player.position + new Vector3(fenceSize / 2, 0, 0), Quaternion.Euler(0, 0, 90)); // Hàng rào phải
-
-            foreach (GameObject fence in fences) // Đặt kích thước cho từng hàng rào
-            {
-                fence.transform.localScale = new Vector3(fenceSize, 1f, 1f); // Kéo dài hàng rào
-            }
+            Destroy(enemy);
         }
 
-        if (bossPrefab != null && player != null)
+        if (bossPrefab != null)
         {
-            Vector3 bossPosition = player.position;
-            GameObject boss = Instantiate(bossPrefab, bossPosition, Quaternion.identity);
-            BossController bossController = boss.GetComponent<BossController>();
-            bossController.target = player;
-            Debug.Log("bossSpawned");
+            Vector2 randomCircle = Random.insideUnitCircle.normalized * spawnRadius;
+            Vector3 spawnPosition = player.position + new Vector3(randomCircle.x, randomCircle.y, 0f);
+            GameObject Boss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
+            BossController enemyController = Boss.GetComponent<BossController>(); // Lấy script của quái
+            enemyController.target = player; // Gán mục tiêu là nhân vật
+            int rd = Random.Range(0, 2);
         }
     }
 }

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: -7923481627147180127}
   - component: {fileID: -7846427069789775012}
   - component: {fileID: 698940031628536605}
-  - component: {fileID: 8935545811017164765}
   m_Layer: 0
   m_Name: bat
   m_TagString: Enemy
@@ -182,11 +181,10 @@ MonoBehaviour:
   maxHealth: 3
   damage: 2
   flashDuration: 0.2
-  attackCooldown: 1
-  healPickupPrefab: {fileID: 5571517184474626029, guid: 2dba8ffa3aca2274da48824466504383, type: 3}
-  dropChance: 0.2
-  animator: {fileID: 698940031628536605}
-  healthBar: {fileID: 0}
+  flashCount: 3
+  lootItems:
+  - {fileID: 5571517184474626029, guid: 2dba8ffa3aca2274da48824466504383, type: 3}
+  dropChance: 0.5
 --- !u!95 &698940031628536605
 Animator:
   serializedVersion: 7
@@ -209,25 +207,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!195 &8935545811017164765
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062995988722216863}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.87
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.61
-  m_BaseOffset: 0.305
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4

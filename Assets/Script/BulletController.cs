@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private Vector2 huong;
-    public float damage = 1f; // Sát thương của đạn
+    public float damage = 1f;
 
     private void Start()
     {

@@ -1,4 +1,6 @@
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,11 +10,17 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _anim;
     public float maxHealth = 10f;
-    protected float currentHealth;
     public float health;
-    
-    public Slider healthBar;
+    bool dead;
+    public GameObject gun;
 
+    public int atk;
+    
+
+    Vector2 movement;
+    private float moveX;
+    private float moveY;
+  
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     public float flashDuration = 0.1f;
@@ -20,34 +28,48 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        atk = 1;
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         health = maxHealth;
-        if (healthBar != null)
-        {
-            healthBar.maxValue = maxHealth;
-            healthBar.value = maxHealth;
-        }
+        GameManager.gm.ShowHeath(health, maxHealth);
+        GameManager.gm.ShowSpeed(speed);
+        GameManager.gm.ShowatkDmg(atk);
     }
 
     void Update()
     {
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-        Vector2 movement = new Vector2(moveX, moveY).normalized * speed;
-        _rb.linearVelocity = movement;
+        if (!dead && !GameManager.gm.Pause)
+        {
+            moveX = Input.GetAxisRaw("Horizontal");
+            moveY = Input.GetAxisRaw("Vertical");
+            movement = new Vector2(moveX, moveY).normalized;
+            _rb.linearVelocity = movement * speed;
+            if (movement.magnitude > 0)
+            {
+                _anim.SetBool("isMoving", true);
+                _anim.SetFloat("X", moveX);
+                _anim.SetFloat("Y", moveY);
 
-        bool isMoving = movement.magnitude > 0;
-        _anim.SetBool("isMoving", isMoving);
-        _anim.SetFloat("X", moveX);
-        _anim.SetFloat("Y", moveY);
-        if (moveX == 0 && moveY < 0) _anim.SetFloat("direct", 1);
-        if (moveX < 0 && moveY == 0) _anim.SetFloat("direct", 2);
-        if (moveX == 0 && moveY > 0) _anim.SetFloat("direct", 3);
-        if (moveX > 0 && moveY == 0) _anim.SetFloat("direct", 4);
+                // Lưu hướng đứng yên cuối cùng để quay mặt đúng
+                if (moveX == 0 && moveY < 0) _anim.SetFloat("direct", 1);
+                if (moveX < 0 && moveY == 0) _anim.SetFloat("direct", 2);
+                if (moveX == 0 && moveY > 0) _anim.SetFloat("direct", 3);
+                if (moveX > 0 && moveY == 0) _anim.SetFloat("direct", 4);
+            }
+            else
+            {
+                _anim.SetBool("isMoving", false);
+            }
+        }
+        else
+        {
+            movement = Vector2.zero;
+        }
     }
+
 
     public Vector2 GetPosition()
     {
@@ -59,6 +81,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss"))
         {
             TakeDamage(1f);
+            GameManager.gm.ShowHeath(health, maxHealth);
         }
 
         if (other.gameObject.CompareTag("HeathPickup"))
@@ -72,14 +95,10 @@ public class PlayerController : MonoBehaviour
     {
         health -= damage;
         Debug.Log($"Health: {health}");
-        if (health < 0) health = 0;
-        if (healthBar != null)
-        {
-            healthBar.value = health;
-        }
         if (health <= 0)
         {
-            Die();
+
+            StartCoroutine(DelayDead());    
         }
         else
         {
@@ -87,11 +106,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Die()
+    IEnumerator DelayDead()
     {
-        Debug.Log("playerDie");
-        Destroy(gameObject);
+        dead = true;
+        gun.SetActive(false);
+        Collider2D collider = GetComponent<Collider2D>();
+        collider.enabled = false;
+        _anim.Play($"PlayerDead");
+        yield return new WaitForSeconds(1.5f);
+        Time.timeScale = 0f;
+        GameManager.gm.Playerdead();
     }
+
+   
 
     private IEnumerator SpeedBoost()
     {
@@ -105,10 +132,7 @@ public class PlayerController : MonoBehaviour
         health += amount;
         Debug.Log($"Health: {health}");
         if (health > maxHealth) health = maxHealth;
-        if (healthBar != null)
-        {
-            healthBar.value = health;
-        }
+       
     }
 
     private IEnumerator Flash()

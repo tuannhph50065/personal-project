@@ -122,18 +122,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 7587296900539247473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1f1149d3d45efa49b533828c4c0af10, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ef905163c34d884cb7fc93446fee5cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   moveSpeed: 2
   maxHealth: 3
   damage: 1
-  flashDuration: 0.2
-  attackCooldown: 1
-  healPickupPrefab: {fileID: 5571517184474626029, guid: 2dba8ffa3aca2274da48824466504383, type: 3}
-  dropChance: 0.2
-  animator: {fileID: 0}
+  flashDuration: 0.1
+  flashCount: 3
+  lootItems:
+  - {fileID: 5571517184474626029, guid: 2dba8ffa3aca2274da48824466504383, type: 3}
+  dropChance: 0.5
 --- !u!50 &-8531626473531740269
 Rigidbody2D:
   serializedVersion: 5

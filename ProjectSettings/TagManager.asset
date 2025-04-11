@@ -10,6 +10,8 @@ TagManager:
   - BulletShoot
   - Bullet
   - Boss
+  - Speed
+  - Atk
   layers:
   - Default
   - TransparentFX

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.Build.Content;
@@ -84,11 +85,34 @@ public class PlayerController : MonoBehaviour
             GameManager.gm.ShowHeath(health, maxHealth);
         }
 
-        if (other.gameObject.CompareTag("HeathPickup"))
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("HeathPickup"))
         {
             Heal(2f);
             Destroy(other.gameObject);
         }
+
+        if (other.CompareTag("Speed"))
+        {
+            StartCoroutine(SpeedBoost());
+            Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("Atk"))
+        {
+            BoostAttack();
+            Destroy(other.gameObject);
+        }
+    }
+
+    public void BoostAttack()
+    {
+        atk += 1;
+        GameManager.gm.ShowatkDmg(atk);
     }
 
     public void TakeDamage(float damage)
@@ -118,16 +142,17 @@ public class PlayerController : MonoBehaviour
         GameManager.gm.Playerdead();
     }
 
-   
 
-    private IEnumerator SpeedBoost()
+    public IEnumerator SpeedBoost()
     {
+        GameManager.gm.ShowSpeed(speed);
         speed *= 1.5f;
         yield return new WaitForSeconds(3f);
         speed /= 1.5f;
+        
     }
 
-    private void Heal(float amount)
+    public void Heal(float amount)
     {
         health += amount;
         Debug.Log($"Health: {health}");

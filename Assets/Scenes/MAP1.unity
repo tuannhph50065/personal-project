@@ -1167,9 +1167,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0baa53a389690834c95752a3bbf4462c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
   maxHealth: 10
   health: 0
   gun: {fileID: 9088814}
+  atk: 0
   flashDuration: 0.1
   flashCount: 3
 --- !u!61 &683707823
@@ -1533,7 +1535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9049484410887886931, guid: 2fd61f25e2411974b8e530f04f94bd1e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.726809
+      value: 16.584
       objectReference: {fileID: 0}
     - target: {fileID: 9049484410887886931, guid: 2fd61f25e2411974b8e530f04f94bd1e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1815,10 +1817,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   listEnemyLevel:
   - {fileID: 11400000, guid: 1901a0dc13d023648b5c5e6adf2d6fe3, type: 2}
-  - {fileID: 11400000, guid: d545aeabf9005f54ea79c6734c54a9a8, type: 2}
-  - {fileID: 11400000, guid: 54e017b6c698e9b47869a7143aa7c849, type: 2}
+  - {fileID: 11400000, guid: 1901a0dc13d023648b5c5e6adf2d6fe3, type: 2}
+  - {fileID: 11400000, guid: 1901a0dc13d023648b5c5e6adf2d6fe3, type: 2}
   player: {fileID: 683707827}
   slime: {fileID: 2062995988722216863, guid: c45900342864cf74d89ce93d63cc754f, type: 3}
+  goblin: {fileID: 7587296900539247473, guid: 83268204aed48b74d90fc0fdc8b0b5d0, type: 3}
+  ghost: {fileID: 602553771946555303, guid: 0770af5825aa6be4ea4bd3a6292df145, type: 3}
+  boss: {fileID: 4060603323306856039, guid: 73ca0eb8d8d8d6444b7fe34c500a4056, type: 3}
 --- !u!4 &1094728805
 Transform:
   m_ObjectHideFlags: 0

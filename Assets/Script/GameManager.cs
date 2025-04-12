@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowatkDmg(int _atk)
     {
-        ui.ShowatkDmg(_atk.ToString("no"));
+        ui.ShowatkDmg(_atk.ToString("n0"));
     }
 
     public void ShowSpeed(float _speed)
